@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>John Earnshaw</Authors>
+    <Company>reblGreen Software Ltd</Company>
+    <Copyright>reblGreen Software Ltd</Copyright>
+    <Description>A basic cache module which uses an in-memory dictionary to store event output to cache using the event name and input as a storage and lookup identifier.</Description>
+    <PackageIconUrl>https://avatars1.githubusercontent.com/u/31241141</PackageIconUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="reblGreen.Cache" Version="1.0.8" />
+    <PackageReference Include="reblGreen.NetCore.Modules" Version="1.0.0" />
+    <PackageReference Include="reblGreen.NetCore.Modules.Events.GetCachedEvent" Version="1.0.0" />
+    <PackageReference Include="reblGreen.Serialization.Json" Version="1.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="reblGreen.NetCore.Modules.MemoryCache.CacheModule.settings.default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+
+</Project>
