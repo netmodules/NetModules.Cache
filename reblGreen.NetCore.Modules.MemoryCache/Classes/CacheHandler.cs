@@ -114,6 +114,7 @@ namespace reblGreen.NetCore.Modules.MemoryCache.Classes
         /// </summary>
         internal void SetCachedEvent(IEvent @event)
         {
+            // Check to see if the event has already been cached and if it has we shouldn't cache it again.
             if (@event.GetMetaValue("fromCache", false))
             {
                 return;
@@ -121,13 +122,18 @@ namespace reblGreen.NetCore.Modules.MemoryCache.Classes
 
             TimeSpan expires;
 
-            if (Expires.TryGetValue(@event.Name, out int seconds))
-            {
-                if (seconds == 0)
-                {
-                    return;
-                }
+            // Check to see if the event has the cacheExpires meta key and if it does then this overrides
+            // any other settings.
+            var metaCache = @event.GetMetaValue("cacheExpires", -1);
 
+            if (metaCache > -1)
+            {
+                expires = TimeSpan.FromSeconds(metaCache);
+            }
+            else if (Expires.TryGetValue(@event.Name, out int seconds))
+            {
+                // Is the event named in the expires dictionary? If it is then this overrides the default
+                // expiry time.
                 expires = TimeSpan.FromSeconds(seconds);
             }
             else
@@ -135,6 +141,14 @@ namespace reblGreen.NetCore.Modules.MemoryCache.Classes
                 expires = DefaultExpires;
             }
 
+            // If any of the expiry times resulted in 0 seconds then we don't want to cache the object.
+            if (expires == TimeSpan.Zero)
+            {
+                return;
+            }
+
+            // We use the IEvent.Name and IEvent.Input to generate a unique key to cache the event output with.
+            // If the input or output are null we can't cache the output object.
             var input = @event.GetEventInput();
             var output = @event.GetEventOutput();
 
@@ -157,7 +171,7 @@ namespace reblGreen.NetCore.Modules.MemoryCache.Classes
 
             // Use input string to calculate MD5 hash.
             var sb = new StringBuilder();
-            var inputBytes = Encoding.ASCII.GetBytes(seed);
+            var inputBytes = Encoding.UTF8.GetBytes(seed);
             var hashBytes = Crypto.ComputeHash(inputBytes);
 
             // Convert the byte array to hexadecimal string.

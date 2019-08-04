@@ -1,6 +1,17 @@
 {
+  /*
+   * The default expiry time in seconds for the event name if it does not exist in
+   * the expire dictionary below or the object does not include a "cacheExpire"
+   * value in the IEvent.Meta dictionary. This defaults to 1 hour (3600 seconds).
+   */
   "defaultExpire": 3600,
 
+  /*
+   * If the event is named in this object it enables you to control cache expiry
+   * time on a per event name basis. This can be overridden using the "cacheExpire"
+   * IEvent.Meta key and an integer value in seconds. Setting a value of 0 seconds
+   * will stop the event object from being cached.
+   */
   "expire": {
     "reblGreen.NetCore.Modules.Events.GetCacheEvent": 0,
     "reblGreen.NetCore.Modules.Events.GetSettingEvent": 0,
