@@ -36,7 +36,7 @@ namespace reblGreen.NetCore.Modules.MemoryCache.Classes
         /// </summary>
         internal void GetCachedEvent(IEvent @event)
         {
-            if (@event.GetMetaValue("noCache", false))
+            if (@event.GetMetaValue("fromCache", false) || @event.GetMetaValue("noCache", false))
             {
                 return;
             }
@@ -115,7 +115,7 @@ namespace reblGreen.NetCore.Modules.MemoryCache.Classes
         internal void SetCachedEvent(IEvent @event)
         {
             // Check to see if the event has already been cached and if it has we shouldn't cache it again.
-            if (@event.GetMetaValue("fromCache", false))
+            if (@event.GetMetaValue("fromCache", false) || @event.GetMetaValue("noCache", false))
             {
                 return;
             }
@@ -158,7 +158,11 @@ namespace reblGreen.NetCore.Modules.MemoryCache.Classes
             }
 
             var key = GenerateInputHash(@event.Name, input);
-            DataStore.SetCache(output, key, expires);
+
+            if (!string.IsNullOrEmpty(key))
+            {
+                DataStore.SetCache(output, key, expires);
+            }
         }
 
 
@@ -167,17 +171,25 @@ namespace reblGreen.NetCore.Modules.MemoryCache.Classes
         /// </summary>
         string GenerateInputHash(EventName name, IEventInput input)
         {
-            var seed = name + input.ToJson();
-
-            // Use input string to calculate MD5 hash.
             var sb = new StringBuilder();
-            var inputBytes = Encoding.UTF8.GetBytes(seed);
-            var hashBytes = Crypto.ComputeHash(inputBytes);
 
-            // Convert the byte array to hexadecimal string.
-            for (var i = 0; i < hashBytes.Length; i++)
+            try
             {
-                sb.Append(hashBytes[i].ToString("x2"));
+                var seed = name + input.ToJson();
+                
+                // Use input string to calculate MD5 hash.
+                var inputBytes = Encoding.UTF8.GetBytes(seed);
+                var hashBytes = Crypto.ComputeHash(inputBytes);
+
+                // Convert the byte array to hexadecimal string.
+                for (var i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2"));
+                }
+            }
+            catch(Exception ex)
+            {
+                Module.Log(LoggingEvent.Severity.Error, "CacheModule is unable to genterate an input hash key for this event:", name, ex);
             }
 
             return sb.ToString();
