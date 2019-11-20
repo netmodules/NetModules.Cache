@@ -83,10 +83,18 @@ namespace reblGreen.NetCore.Modules.MemoryCache.Classes
         /// </summary>
         internal void GetCachedEventEvent(GetCachedEvent @event)
         {
+            if (string.IsNullOrEmpty(@event.Input.EventName) || @event.Input.EventInput == null)
+            {
+                @event.SetMetaValue("message", "GetCachedEvent.Input.EventName and GetCachedEvent.Input.EventInput must be set to valid objects.");
+                @event.Handled = false;
+                return;
+            }
+
             var cached = GetCached(@event.Input.EventName, @event.Input.EventInput);
 
             if(cached == null)
             {
+                @event.Handled = false;
                 return;
             }
 

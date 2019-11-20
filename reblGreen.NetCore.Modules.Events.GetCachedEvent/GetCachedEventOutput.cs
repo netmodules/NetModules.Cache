@@ -7,7 +7,7 @@ namespace reblGreen.NetCore.Modules.Events
     /// If a cached object is found for the values entered in <see cref="GetCachedEventInput"/> it is
     /// returned to the requester via the <see cref="EventOutput"/> property.
     /// </summary>
-    public class GetCachedEventOutput : IEventOutput
+    public struct GetCachedEventOutput : IEventOutput
     {
         /// <summary>
         /// If a cached object is found for the values entered in <see cref="GetCachedEventInput"/> it is

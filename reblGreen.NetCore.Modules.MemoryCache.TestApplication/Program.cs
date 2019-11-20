@@ -33,9 +33,14 @@ namespace reblGreen.NetCore.Modules.MemoryCache.TestApplication
                 host.Handle(dummy);
                 var then = DateTime.UtcNow;
 
-                var getCached = new GetCachedEvent();
-                getCached.Input.EventName = dummy.Name;
-                getCached.Input.EventInput = dummy.Input;
+                var getCached = new GetCachedEvent()
+                {
+                    Input = new GetCachedEventInput()
+                    {
+                        EventName = dummy.Name,
+                        EventInput = dummy.Input
+                    }
+                };
                 host.Handle(getCached);
 
                 var thenAgain = DateTime.UtcNow;

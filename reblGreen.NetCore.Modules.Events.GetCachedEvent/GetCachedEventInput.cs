@@ -6,7 +6,7 @@ namespace reblGreen.NetCore.Modules.Events
     /// <summary>
     /// The properties in this object are used to create an identifier which is used to lookup a cached output.
     /// </summary>
-    public class GetCachedEventInput : IEventInput
+    public struct GetCachedEventInput : IEventInput
     {
         /// <summary>
         /// This property identifies the event type for which the <see cref="EventInput"/> belongs. Set this to
