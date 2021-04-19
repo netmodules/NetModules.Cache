@@ -28,7 +28,7 @@ namespace reblGreen.NetCore.Modules.Events
         /// A unique name which can be used to identify the event type where the concrete type of the IEvent object
         /// is unknown.
         /// </summary>
-        public EventName Name { get { return "reblGreen.NetCore.Modules.Events.GetCachedEvent"; } }
+        public EventName Name { get { return "Cache.GetCachedEvent"; } }
 
 
         /// <summary>
