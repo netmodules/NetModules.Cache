@@ -14,7 +14,7 @@ namespace reblGreen.NetCore.Modules.MemoryCache
     /// </summary>
     [Serializable]
     [Module(
-        HandlePriority = short.MaxValue,
+        HandlePriority = short.MinValue,
         Description = "A basic cache module which uses an in-memory dictionary to store event output to cache using the "
         + "event name and input as a storage and lookup identifier.",
         AdditionalInformation = new string[]

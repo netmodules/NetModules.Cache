@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="reblGreen.NetCore.Modules" Version="1.1.3" />
+    <PackageReference Include="reblGreen.NetCore.Modules" Version="1.1.6" />
     <PackageReference Include="reblGreen.NetCore.Modules.Events.GetCachedEvent" Version="1.1.0" />
     <PackageReference Include="reblGreen.NetCore.Modules.LocalSettings" Version="1.1.3" />
   </ItemGroup>
