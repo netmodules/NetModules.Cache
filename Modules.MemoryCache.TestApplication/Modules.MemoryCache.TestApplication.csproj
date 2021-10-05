@@ -9,12 +9,12 @@
 
   <ItemGroup>
     <PackageReference Include="reblGreen.NetCore.Modules" Version="1.1.6" />
-    <PackageReference Include="reblGreen.NetCore.Modules.Events.GetCachedEvent" Version="1.1.0" />
-    <PackageReference Include="reblGreen.NetCore.Modules.LocalSettings" Version="1.1.3" />
+    <PackageReference Include="Modules.MemoryCache.Events" Version="1.1.6" />
+    <PackageReference Include="reblGreen.NetCore.Modules.LocalSettings" Version="1.1.6.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\reblGreen.NetCore.Modules.Events.GetCachedEvent\reblGreen.NetCore.Modules.Events.GetCachedEvent.csproj" />
+    <ProjectReference Include="..\Modules.MemoryCache.Events\Modules.MemoryCache.Events.csproj" />
     <ProjectReference Include="..\Modules.MemoryCache\Modules.MemoryCache.csproj" />
   </ItemGroup>
 

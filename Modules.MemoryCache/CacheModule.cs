@@ -6,7 +6,7 @@ using reblGreen.NetCore.Modules.Events;
 using reblGreen.NetCore.Modules.Interfaces;
 using Modules.MemoryCache.Classes;
 using reblGreen.Serialization;
-
+using Modules.MemoryCache.Events;
 
 namespace Modules.MemoryCache
 {

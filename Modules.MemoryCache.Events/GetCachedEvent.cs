@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using reblGreen.NetCore.Modules;
 using reblGreen.NetCore.Modules.Interfaces;
 
-namespace reblGreen.NetCore.Modules.Events
+namespace Modules.MemoryCache.Events
 {
     /// <summary>
     /// This event can be handled by event caching modules to return a cached event output.
@@ -28,7 +29,7 @@ namespace reblGreen.NetCore.Modules.Events
         /// A unique name which can be used to identify the event type where the concrete type of the IEvent object
         /// is unknown.
         /// </summary>
-        public EventName Name { get { return "Cache.GetCachedEvent"; } }
+        public EventName Name { get { return "MemoryCache.GetCachedEvent"; } }
 
 
         /// <summary>

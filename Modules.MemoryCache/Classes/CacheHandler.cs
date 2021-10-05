@@ -9,6 +9,7 @@ using reblGreen.Cache;
 using reblGreen.Serialization;
 using reblGreen.NetCore.Modules.Interfaces;
 using reblGreen.NetCore.Modules.Events;
+using Modules.MemoryCache.Events;
 
 namespace Modules.MemoryCache.Classes
 {

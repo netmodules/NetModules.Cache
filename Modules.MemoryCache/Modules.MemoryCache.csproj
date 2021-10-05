@@ -15,12 +15,12 @@
   <ItemGroup>
     <PackageReference Include="reblGreen.Cache" Version="1.0.8" />
     <PackageReference Include="reblGreen.NetCore.Modules" Version="1.1.6" />
-    <PackageReference Include="reblGreen.NetCore.Modules.Events.GetCachedEvent" Version="1.1.6" />
-    <PackageReference Include="reblGreen.Serialization.Json" Version="1.0.7.1" />
+    <PackageReference Include="Modules.MemoryCache.Events" Version="1.1.6" />
+    <PackageReference Include="reblGreen.Serialization.Json" Version="1.1.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\reblGreen.NetCore.Modules.Events.GetCachedEvent\reblGreen.NetCore.Modules.Events.GetCachedEvent.csproj" />
+    <ProjectReference Include="..\Modules.MemoryCache.Events\Modules.MemoryCache.Events.csproj" />
   </ItemGroup>
 
   <ItemGroup>

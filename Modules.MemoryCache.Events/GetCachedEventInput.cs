@@ -1,7 +1,8 @@
 ﻿using System;
+using reblGreen.NetCore.Modules;
 using reblGreen.NetCore.Modules.Interfaces;
 
-namespace reblGreen.NetCore.Modules.Events
+namespace Modules.MemoryCache.Events
 {
     /// <summary>
     /// The properties in this object are used to create an identifier which is used to lookup a cached output.

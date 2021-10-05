@@ -1,4 +1,5 @@
-﻿using reblGreen;
+﻿using Modules.MemoryCache.Events;
+using reblGreen;
 using reblGreen.NetCore.Modules;
 using reblGreen.NetCore.Modules.Events;
 using System;

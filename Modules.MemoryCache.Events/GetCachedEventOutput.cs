@@ -1,7 +1,7 @@
 ﻿using System;
 using reblGreen.NetCore.Modules.Interfaces;
 
-namespace reblGreen.NetCore.Modules.Events
+namespace Modules.MemoryCache.Events
 {
     /// <summary>
     /// If a cached object is found for the values entered in <see cref="GetCachedEventInput"/> it is
