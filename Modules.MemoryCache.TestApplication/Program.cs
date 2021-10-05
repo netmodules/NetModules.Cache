@@ -1,8 +1,10 @@
-﻿using reblGreen.NetCore.Modules.Events;
+﻿using reblGreen;
+using reblGreen.NetCore.Modules;
+using reblGreen.NetCore.Modules.Events;
 using System;
 using System.Threading;
 
-namespace reblGreen.NetCore.Modules.MemoryCache.TestApplication
+namespace Modules.MemoryCache.TestApplication
 {
     class Program
     {

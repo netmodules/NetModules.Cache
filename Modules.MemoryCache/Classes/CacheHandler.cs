@@ -1,4 +1,6 @@
-﻿using System;
+﻿using reblGreen;
+using reblGreen.NetCore.Modules;
+using System;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using reblGreen.Serialization;
 using reblGreen.NetCore.Modules.Interfaces;
 using reblGreen.NetCore.Modules.Events;
 
-namespace reblGreen.NetCore.Modules.MemoryCache.Classes
+namespace Modules.MemoryCache.Classes
 {
     [Serializable]
     internal class CacheHandler

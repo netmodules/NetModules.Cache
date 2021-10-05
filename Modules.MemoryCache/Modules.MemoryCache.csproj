@@ -24,9 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="reblGreen.NetCore.Modules.MemoryCache.CacheModule.settings.default.json">
+    <None Update="Modules.MemoryCache.CacheModule.settings.default.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Pack>true</Pack>
+	  <PackageCopyToOutput>true</PackageCopyToOutput>
     </None>
   </ItemGroup>
 

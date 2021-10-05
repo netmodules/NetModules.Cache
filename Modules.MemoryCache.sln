@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "reblGreen.NetCore.Modules.MemoryCache", "reblGreen.NetCore.Modules.MemoryCache\reblGreen.NetCore.Modules.MemoryCache.csproj", "{4DBDFFAC-CFAA-4D64-B860-73E4272C96D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules.MemoryCache", "Modules.MemoryCache\Modules.MemoryCache.csproj", "{4DBDFFAC-CFAA-4D64-B860-73E4272C96D4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "reblGreen.NetCore.Modules.MemoryCache.TestApplication", "reblGreen.NetCore.Modules.MemoryCache.TestApplication\reblGreen.NetCore.Modules.MemoryCache.TestApplication.csproj", "{0C91DBBB-A456-4724-BF48-F68CBB280F03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules.MemoryCache.TestApplication", "Modules.MemoryCache.TestApplication\Modules.MemoryCache.TestApplication.csproj", "{0C91DBBB-A456-4724-BF48-F68CBB280F03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reblGreen.NetCore.Modules.Events.GetCachedEvent", "reblGreen.NetCore.Modules.Events.GetCachedEvent\reblGreen.NetCore.Modules.Events.GetCachedEvent.csproj", "{21281362-A34D-4D6A-8B3D-7151CFC07DE9}"
 EndProject

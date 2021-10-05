@@ -1,12 +1,14 @@
-﻿using System;
+﻿using reblGreen;
+using reblGreen.NetCore.Modules;
+using System;
 using System.Collections.Generic;
 using reblGreen.NetCore.Modules.Events;
 using reblGreen.NetCore.Modules.Interfaces;
-using reblGreen.NetCore.Modules.MemoryCache.Classes;
+using Modules.MemoryCache.Classes;
 using reblGreen.Serialization;
 
 
-namespace reblGreen.NetCore.Modules.MemoryCache
+namespace Modules.MemoryCache
 {
     /// <summary>
     /// A basic cache module which uses an in-memory dictionary to store event output to cache using the event name and
