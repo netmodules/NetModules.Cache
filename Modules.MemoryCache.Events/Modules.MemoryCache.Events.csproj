@@ -8,11 +8,11 @@
     <Copyright>reblGreen Software Ltd</Copyright>
     <Description>This package contains an event which can be handled by event caching modules to return a cached event output. Event caching modules should handle event output caching automatically but should also handle this event directly if the event is raised by another module. A usage example could be peer-to-peer module event requests.</Description>
     <PackageIconUrl>https://avatars1.githubusercontent.com/u/31241141</PackageIconUrl>
-    <Version>1.2.6</Version>
+    <Version>1.2.7</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="reblGreen.NetCore.Modules" Version="1.2.6" />
+    <PackageReference Include="reblGreen.NetCore.Modules" Version="1.2.7" />
   </ItemGroup>
 
   <ItemGroup>

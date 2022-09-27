@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="reblGreen.NetCore.Modules" Version="1.2.6" />
+    <PackageReference Include="reblGreen.NetCore.Modules" Version="1.2.7" />
     <PackageReference Include="Modules.MemoryCache.Events" Version="1.2.4" />
-    <PackageReference Include="Modules.LocalSettings" Version="1.2.6" />
+    <PackageReference Include="Modules.LocalSettings" Version="1.2.7" />
   </ItemGroup>
 
   <ItemGroup>
