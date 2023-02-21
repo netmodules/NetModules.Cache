@@ -9,14 +9,14 @@
     <Copyright>reblGreen Software Ltd</Copyright>
     <Description>A basic cache module which uses an in-memory dictionary to store event output to cache using the event name and input as a storage and lookup identifier.</Description>
     <PackageIconUrl>https://avatars1.githubusercontent.com/u/31241141</PackageIconUrl>
-    <Version>1.2.7</Version>
+    <Version>1.2.7.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="reblGreen.Cache" Version="1.0.8" />
-    <PackageReference Include="reblGreen.NetCore.Modules" Version="1.2.7" />
-    <PackageReference Include="Modules.MemoryCache.Events" Version="1.2.7" />
-    <PackageReference Include="reblGreen.Serialization.Json" Version="1.1.4" />
+    <PackageReference Include="reblGreen.Serialization.Json" Version="1.1.12" />
+	<PackageReference Include="reblGreen.NetCore.Modules" Version="1.2.7" />
+	<PackageReference Include="Modules.MemoryCache.Events" Version="1.2.7" />
   </ItemGroup>
 
   <ItemGroup>

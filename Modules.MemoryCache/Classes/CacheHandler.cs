@@ -17,7 +17,7 @@ namespace Modules.MemoryCache.Classes
     internal class CacheHandler
     {
         Module Module;
-        MD5 Crypto;
+        //MD5 Crypto;
         TimeSpan DefaultExpires;
         Dictionary<string, int> Expires;
 
@@ -27,7 +27,7 @@ namespace Modules.MemoryCache.Classes
         internal CacheHandler(Module module, uint defaultExpires, Dictionary<string, object> expires)
         {
             Module = module;
-            Crypto = MD5.Create();
+            //Crypto = MD5.Create();
 
             DefaultExpires = TimeSpan.FromSeconds(defaultExpires);
             Expires = new Dictionary<string, int>(expires.Select(x => new KeyValuePair<string, int>(x.Key, (int)x.Value)));
@@ -190,12 +190,17 @@ namespace Modules.MemoryCache.Classes
                 
                 // Use input string to calculate MD5 hash.
                 var inputBytes = Encoding.UTF8.GetBytes(seed);
-                var hashBytes = Crypto.ComputeHash(inputBytes);
+                //var hashBytes = Crypto.ComputeHash(inputBytes);
 
-                // Convert the byte array to hexadecimal string.
-                for (var i = 0; i < hashBytes.Length; i++)
+                using (var md5 = MD5.Create())
                 {
-                    sb.Append(hashBytes[i].ToString("x2"));
+                    var hashBytes = md5.ComputeHash(inputBytes);
+
+                    // Convert the byte array to hexadecimal string.
+                    for (var i = 0; i < hashBytes.Length; i++)
+                    {
+                        sb.Append(hashBytes[i].ToString("x2"));
+                    }
                 }
             }
             catch(Exception ex)
