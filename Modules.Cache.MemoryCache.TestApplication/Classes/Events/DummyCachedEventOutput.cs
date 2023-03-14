@@ -1,9 +1,8 @@
-﻿using reblGreen;
-using reblGreen.NetCore.Modules;
-using System;
-using reblGreen.NetCore.Modules.Interfaces;
+﻿using System;
+using NetModules;
+using NetModules.Interfaces;
 
-namespace Modules.MemoryCache.TestApplication
+namespace Modules.Cache.MemoryCache.TestApplication
 {
     /// <summary>
     /// 

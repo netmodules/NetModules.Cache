@@ -1,23 +1,23 @@
-﻿using reblGreen;
-using reblGreen.NetCore.Modules;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using reblGreen.NetCore.Modules.Events;
-using reblGreen.NetCore.Modules.Interfaces;
-using Modules.MemoryCache.Classes;
-using reblGreen.Serialization;
-using Modules.MemoryCache.Events;
+using NetModules;
+using NetModules.Events;
+using NetModules.Interfaces;
+using Modules.Cache.MemoryCache.Classes;
+using NetTools.Serialization;
+using Modules.Cache.Events;
 
-namespace Modules.MemoryCache
+namespace Modules.Cache.MemoryCache
 {
     /// <summary>
-    /// A basic cache module which uses an in-memory dictionary to store event output to cache using the event name and
+    /// A basic cache module that uses an in-memory dictionary to store event output to cache using the event name and
     /// input as a storage and lookup identifier
     /// </summary>
     [Serializable]
     [Module(
-        HandlePriority = short.MinValue,
-        Description = "A basic cache module which uses an in-memory dictionary to store event output to cache using the "
+        LoadPriority = short.MinValue,
+        HandlePriority = short.MaxValue,
+        Description = "A basic cache module that uses an in-memory dictionary to store event output to cache using the "
         + "event name and input as a storage and lookup identifier.",
         AdditionalInformation = new string[]
         {
@@ -32,7 +32,7 @@ namespace Modules.MemoryCache
             + "not exist in the event meta."
         }
     )]
-    public class CacheModule : Module, IEventPostHandler<IEvent>
+    public class MemoryCacheModule : Module, IEventPostHandler<IEvent>
     {
         CacheHandler CacheHandler;
 

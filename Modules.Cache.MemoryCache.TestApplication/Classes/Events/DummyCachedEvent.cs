@@ -1,10 +1,9 @@
-﻿using reblGreen;
-using reblGreen.NetCore.Modules;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using reblGreen.NetCore.Modules.Interfaces;
+using NetModules;
+using NetModules.Interfaces;
 
-namespace Modules.MemoryCache.TestApplication
+namespace Modules.Cache.MemoryCache.TestApplication
 {
     /// <summary>
     /// 
@@ -26,7 +25,7 @@ namespace Modules.MemoryCache.TestApplication
         /// <summary>
         /// 
         /// </summary>
-        public EventName Name { get { return "reblGreen.NetCore.Modules.Events.DummyCachedEvent"; } }
+        public EventName Name { get { return "NetModules.Events.DummyCachedEvent"; } }
 
 
         /// <summary>

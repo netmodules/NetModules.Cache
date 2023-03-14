@@ -1,11 +1,11 @@
-﻿using Modules.MemoryCache.Events;
-using reblGreen;
-using reblGreen.NetCore.Modules;
-using reblGreen.NetCore.Modules.Events;
-using System;
+﻿using System;
 using System.Threading;
+using NetModules;
+using NetModules.Interfaces;
+using Modules.Cache.Events;
+using NetModules.Events;
 
-namespace Modules.MemoryCache.TestApplication
+namespace Modules.Cache.MemoryCache.TestApplication
 {
     class Program
     {
@@ -16,7 +16,7 @@ namespace Modules.MemoryCache.TestApplication
             ModuleHost host = new BasicModuleHost();
             host.Modules.LoadModules();
 
-            var myModule = host.Modules.GetModulesByType<CacheModule>();
+            var myModule = host.Modules.GetModulesByType<MemoryCacheModule>();
 
             if (myModule.Count > 0)
             {

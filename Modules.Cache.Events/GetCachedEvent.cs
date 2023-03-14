@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using reblGreen.NetCore.Modules;
-using reblGreen.NetCore.Modules.Interfaces;
+using NetModules;
+using NetModules.Interfaces;
+using NetTools.Serialization.JsonSchemaAttributes;
 
-namespace Modules.MemoryCache.Events
+namespace Modules.Cache.Events
 {
     /// <summary>
     /// This event can be handled by event caching modules to return a cached event output.
     /// Event caching modules should handle event output caching automatically but should also handle this event
     /// directly if the event is raised by another module.
     /// </summary>
+    [JsonSchemaTitle("Get Cached Event Event")]
+    [JsonSchemaDescription("This event can be handled by various event caching modules.")]
     public class GetCachedEvent : IEvent<GetCachedEventInput, GetCachedEventOutput>
     {
         /// <summary>
@@ -29,7 +32,7 @@ namespace Modules.MemoryCache.Events
         /// A unique name which can be used to identify the event type where the concrete type of the IEvent object
         /// is unknown.
         /// </summary>
-        public EventName Name { get { return "MemoryCache.GetCachedEvent"; } }
+        public EventName Name { get { return "Cache.GetCachedEvent"; } }
 
 
         /// <summary>

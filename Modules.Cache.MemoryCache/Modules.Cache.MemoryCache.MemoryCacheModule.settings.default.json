@@ -13,8 +13,8 @@
    * will stop the event object from being cached.
    */
   "expire": {
-    "MemoryCache.GetCachedEvent": 0,
-    "reblGreen.NetCore.Modules.Events.GetSettingEvent": 0,
-    "reblGreen.NetCore.Modules.Events.LoggingEvent": 0
+    "Cache.GetCachedEvent": 0,
+    "NetModules.Events.GetSettingEvent": 0,
+    "NetModules.Events.LoggingEvent": 0
   }
 }
