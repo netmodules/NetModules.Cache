@@ -7,13 +7,13 @@
     <Authors>John Earnshaw</Authors>
     <Copyright>John Earnshaw</Copyright>
     <Description>A basic cache module which uses an in-memory dictionary to store event output to cache using the event name and input as a storage and lookup identifier.</Description>
-    <Version>1.2.8.1</Version>
+    <Version>1.2.8.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
 	<PackageReference Include="NetModules" Version="1.2.8" />
 	<PackageReference Include="NetTools.Cache" Version="1.1.0" />
-    <PackageReference Include="NetTools.Serialization.Json" Version="1.1.10" />
+    <PackageReference Include="NetTools.Serialization.Json" Version="1.1.15" />
 	<PackageReference Include="Modules.Cache.Events" Version="1.2.8" />
   </ItemGroup>
 

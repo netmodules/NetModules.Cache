@@ -16,7 +16,7 @@ namespace Modules.Cache.MemoryCache
     [Serializable]
     [Module(
         LoadPriority = short.MinValue,
-        HandlePriority = short.MaxValue,
+        HandlePriority = short.MinValue + 1000,
         Description = "A basic cache module that uses an in-memory dictionary to store event output to cache using the "
         + "event name and input as a storage and lookup identifier.",
         AdditionalInformation = new string[]

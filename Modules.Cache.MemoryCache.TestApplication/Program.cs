@@ -53,6 +53,29 @@ namespace Modules.Cache.MemoryCache.TestApplication
                 Console.WriteLine("Retrieved in: " + thenAgain.Subtract(then));
             }
 
+            var getSetting1 = new GetSettingEvent()
+            {
+                Input = new GetSettingEventInput()
+                {
+                    ModuleName = "Modules.Cache.MemoryCache.MemoryCacheModule",
+                    SettingName = "defaultExpire"
+                }
+            };
+
+            host.Handle(getSetting1);
+
+
+            var getSetting2 = new GetSettingEvent()
+            {
+                Input = new GetSettingEventInput()
+                {
+                    ModuleName = "Modules.Cache.MemoryCache.MemoryCacheModule",
+                    SettingName = "defaultExpire"
+                }
+            };
+
+            host.Handle(getSetting2);
+
             BlockingHandle.WaitOne();
         }
     }

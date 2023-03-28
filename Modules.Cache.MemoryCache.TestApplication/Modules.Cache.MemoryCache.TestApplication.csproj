@@ -18,6 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Modules.Cache.MemoryCache.MemoryCacheModule.settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+      <Pack>true</Pack>
+    </None>
     <None Update="Modules.LocalSettings.SettingsModule.settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
