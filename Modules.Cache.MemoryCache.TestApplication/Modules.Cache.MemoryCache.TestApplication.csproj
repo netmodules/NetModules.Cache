@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="NetModules" Version="1.2.8" />
-    <PackageReference Include="Modules.Settings.LocalSettings" Version="1.2.8" />
+    <PackageReference Include="Modules.Settings.LocalSettings" Version="1.2.8.2" />
   </ItemGroup>
 
   <ItemGroup>

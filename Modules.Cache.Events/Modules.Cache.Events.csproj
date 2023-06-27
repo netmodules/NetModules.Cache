@@ -7,12 +7,12 @@
     <Authors>John Earnshaw</Authors>
     <Copyright>John Earnshaw</Copyright>
     <Description>This package contains an event which can be handled by event caching modules to return a cached event output. Event caching modules should handle event output caching automatically but should also handle this event directly if the event is raised by another module. A usage example could be peer-to-peer module event requests.</Description>
-    <Version>1.2.8</Version>
+    <Version>1.2.8.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NetModules" Version="1.2.8" />
-	<PackageReference Include="NetTools.Serialization.JsonSchema" Version="1.1.4" />
+	<PackageReference Include="NetTools.Serialization.JsonSchema" Version="1.1.14" />
   </ItemGroup>
 	
 </Project>

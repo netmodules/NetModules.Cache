@@ -72,7 +72,18 @@ namespace Modules.Cache.MemoryCache
         public override void OnLoading()
         {
             var defaultExpire = GetSetting("defaultExpire", 3600);
-            var expire = GetSetting("expire", new Dictionary<string, object>());
+            var expire = GetSetting("expire", new Dictionary<string, object>() { { "NetModules.Events.LoggingEvent", 0 } });
+
+            if (expire == null)
+            {
+                expire = new Dictionary<string, object>();
+            }
+
+            // Force LoggingEvent to have 0 cache expire to prevent stackoverflow exception...
+            if (!expire.TryGetValue("NetModules.Events.LoggingEvent", out var loggingEvent) || !(loggingEvent is int val) || val != 0)
+            {
+                expire["NetModules.Events.LoggingEvent"] = 0;
+            }
 
             CacheHandler = new CacheHandler(this, (uint)defaultExpire, expire);
             base.OnLoading();
