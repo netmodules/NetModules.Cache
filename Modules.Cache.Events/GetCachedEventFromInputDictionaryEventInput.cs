@@ -10,9 +10,9 @@ namespace Modules.Cache.Events
     /// <summary>
     /// The properties in this object are used to create an identifier which is used to lookup a cached output.
     /// </summary>
-    [JsonSchemaTitle("Get Cached Event Input")]
+    [JsonSchemaTitle("Get Cached Event From Input Dictionary Input")]
     [JsonSchemaDescription("")]
-    public struct GetCachedEventInput : IEventInput
+    public struct GetCachedEventFromInputDictionaryEventInput : IEventInput
     {
         /// <summary>
         /// This property identifies the event type for which the <see cref="EventInput"/> belongs. Set this to
@@ -30,7 +30,7 @@ namespace Modules.Cache.Events
         [JsonSchemaTitle("Event Input")]
         [JsonSchemaDescription("The Event Name and Event Input are used to generate a \"unique\" key when caching an IEventOutput. This unique key is later used to retrieve the cached data when required. Set this to the event input object for the event you wish to check the cache for.")]
         [JsonSchemaType(BasicType.Object)]
-        public IEventInput EventInput { get; set; }
+        public Dictionary<string, object>  EventInput { get; set; }
 
         /// <summary>
         /// The <see cref="IEvent.Meta"/> may be required to generate a "unique" key if caching module is

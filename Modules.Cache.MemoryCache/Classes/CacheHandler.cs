@@ -17,19 +17,32 @@ namespace Modules.Cache.MemoryCache.Classes
     {
         Module Module;
         //MD5 Crypto;
+
         TimeSpan DefaultExpires;
         Dictionary<string, int> Expires;
+        
+        bool CacheWithMeta;
+        List<string> ExcludeMetaKeys;
+
+        bool CacheUniqueKeys;
+
+        // Used to start checking cache, this field is set by MemoryCacheModule
+        // when OnAllModulesLoaded() is invoked by ModuleHost.
+        internal bool Loaded = false;
 
         /// <summary>
         /// 
         /// </summary>
-        internal CacheHandler(Module module, uint defaultExpires, Dictionary<string, object> expires)
+        internal CacheHandler(Module module, uint defaultExpires, Dictionary<string, object> expires, bool cacheWithMeta, List<object> excludeMetaKeys, bool cacheUniqueKeys)
         {
             Module = module;
             //Crypto = MD5.Create();
 
             DefaultExpires = TimeSpan.FromSeconds(defaultExpires);
-            Expires = new Dictionary<string, int>(expires.Select(x => new KeyValuePair<string, int>(x.Key, (int)x.Value)));
+            Expires = new Dictionary<string, int>(expires.Select(x => new KeyValuePair<string, int>(x.Key, int.TryParse(x.Value.ToString(), out var expire) ? expire : (int)DefaultExpires.TotalSeconds)));
+            CacheWithMeta = cacheWithMeta;
+            ExcludeMetaKeys = new List<string>(excludeMetaKeys.Where(x => x != null && !string.IsNullOrWhiteSpace(x.ToString())).Select(x => x.ToString()));
+            CacheUniqueKeys = cacheUniqueKeys;
         }
 
 
@@ -38,6 +51,11 @@ namespace Modules.Cache.MemoryCache.Classes
         /// </summary>
         internal void GetCachedEvent(IEvent @event)
         {
+            if (!Loaded)
+            {
+                return;
+            }
+
             if (@event.GetMetaValue("fromCache", false) || @event.GetMetaValue("noCache", false))
             {
                 return;
@@ -58,7 +76,8 @@ namespace Modules.Cache.MemoryCache.Classes
                 return;
             }
 
-            var cached = GetCached(@event.Name, input);
+            var meta = @event.Meta;
+            var cached = GetCached(@event.Name, input, meta);
 
             if (cached == null)
             {
@@ -83,38 +102,100 @@ namespace Modules.Cache.MemoryCache.Classes
         /// <summary>
         /// 
         /// </summary>
-        internal void GetCachedEventEvent(GetCachedEvent @event)
+        internal void GetCachedEventEvent(GetCachedEvent e)
         {
-            if (string.IsNullOrEmpty(@event.Input.EventName) || @event.Input.EventInput == null)
+            if (string.IsNullOrEmpty(e.Input.EventName) || e.Input.EventInput == null)
             {
-                @event.SetMetaValue("message", "GetCachedEvent.Input.EventName and GetCachedEvent.Input.EventInput must be set to valid objects.");
-                @event.Handled = false;
+                e.SetMetaValue("message", "GetCachedEvent.Input.EventName and GetCachedEvent.Input.EventInput must be set to valid objects.");
+                e.Handled = false;
                 return;
             }
 
-            var cached = GetCached(@event.Input.EventName, @event.Input.EventInput);
+            var cached = GetCached(e.Input.EventName, e.Input.EventInput, e.Input.EventMeta);
 
             if(cached == null)
             {
-                @event.Handled = false;
+                e.SetMetaValue("message", "This event has not been cached.");
+                e.Handled = false;
                 return;
             }
 
-            @event.Output = new GetCachedEventOutput()
+            e.Output = new GetCachedEventOutput()
             {
                 EventOutput = cached
             };
 
-            @event.Handled = true;
+            e.Handled = true;
         }
 
 
         /// <summary>
         /// 
         /// </summary>
-        internal IEventOutput GetCached(EventName name, IEventInput input)
+        internal void GetCachedEventEvent(GetCachedEventFromInputDictionaryEvent e)
         {
-            var key = GenerateInputHash(name, input);
+            if (string.IsNullOrEmpty(e.Input.EventName) || e.Input.EventInput == null)
+            {
+                e.SetMetaValue("message", "GetCachedEvent.Input.EventName and GetCachedEvent.Input.EventInput must be set to valid objects.");
+                e.Handled = false;
+                return;
+            }
+
+            var @event = Module.Host.Events.GetSolidEventFromName(e.Input.EventName);
+
+            if (@event == null)
+            {
+                e.SetMetaValue("message", "Unknown event, the event could not be found in Module.Host.Events");
+                e.Handled = false;
+                return;
+            }
+
+            @event = @event.ObjectFromDictionary(new Dictionary<string, object>
+            {
+                { "name", e.Input.EventName },
+                { "input", e.Input.EventInput },
+                { "meta", e.Input.EventMeta }
+            }) as IEvent;
+
+            var cached = GetCached(@event.Name, @event.GetEventInput(), @event.Meta);
+
+            if (cached == null)
+            {
+                e.SetMetaValue("message", "This event has not been cached.");
+                e.Handled = false;
+                return;
+            }
+
+            e.Output = new GetCachedEventOutput()
+            {
+                EventOutput = cached
+            };
+
+            e.Handled = true;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal IEventOutput GetCached(EventName name, IEventInput input, Dictionary<string, object> meta)
+        {
+            string key = null;
+
+            if (CacheUniqueKeys && meta != null && meta.TryGetValue("id", out var id) && id != null)
+            {
+                var keyId = '_' + id.ToString();
+
+                key = DataStore.GetCache(keyId
+                    , DataStore.SetCache(
+                        GenerateInputHash(name, input, meta), keyId, TimeSpan.FromSeconds(2)
+                      ));
+            }
+            else
+            {
+                key = GenerateInputHash(name, input, meta);
+            }
+
             return DataStore.GetCache(key, null as IEventOutput);
         }
 
@@ -135,6 +216,35 @@ namespace Modules.Cache.MemoryCache.Classes
             // Check to see if the event has the cacheExpires meta key and if it does then this overrides
             // any other settings.
             var metaCache = @event.GetMetaValue("cacheExpires", -1);
+
+            if (metaCache == -1)
+            {
+                // "cacheExpires" meta value may be a TimeSpan...
+                var timespanCache = @event.GetMetaValue("cacheExpires", default(TimeSpan));
+
+                if (timespanCache.TotalSeconds > 0)
+                {
+                    metaCache = (int)timespanCache.TotalSeconds;
+                }
+            }
+
+            // Check to see if the event has the cache meta key and TimeSpan and if it does then this
+            // overrides any other settings.
+            if (metaCache == -1)
+            {
+                var timespanCache = @event.GetMetaValue("cache", default(TimeSpan));
+
+                if (timespanCache.TotalSeconds > 0)
+                {
+                    metaCache = (int)timespanCache.TotalSeconds;
+                }
+            }
+
+            // "cache" meta value may be a int (seconds)...
+            if (metaCache == -1)
+            {
+                metaCache = @event.GetMetaValue("cache", -1);
+            }
 
             if (metaCache > -1)
             {
@@ -167,7 +277,7 @@ namespace Modules.Cache.MemoryCache.Classes
                 return;
             }
 
-            var key = GenerateInputHash(@event.Name, input);
+            var key = GenerateInputHash(@event.Name, input, @event.Meta);
 
             if (!string.IsNullOrEmpty(key))
             {
@@ -179,7 +289,7 @@ namespace Modules.Cache.MemoryCache.Classes
         /// <summary>
         /// This helper method generates an MD5 hash using the event name and a JSON string of the input.
         /// </summary>
-        string GenerateInputHash(EventName name, IEventInput input)
+        string GenerateInputHash(EventName name, IEventInput input,Dictionary<string, object> meta)
         {
             var sb = new StringBuilder();
 
@@ -187,6 +297,19 @@ namespace Modules.Cache.MemoryCache.Classes
             {
                 var seed = name + input.ToJson();
                 
+                if (CacheWithMeta && meta != null)
+                {
+                    foreach (var kv in meta)
+                    {
+                        if (kv.Value == null || ExcludeMetaKeys.Contains(kv.Key))
+                        {
+                            continue;
+                        }
+
+                        seed += kv.Key + kv.Value.ToString();
+                    }
+                }
+
                 // Use input string to calculate MD5 hash.
                 var inputBytes = Encoding.UTF8.GetBytes(seed);
                 //var hashBytes = Crypto.ComputeHash(inputBytes);

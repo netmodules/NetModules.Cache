@@ -6,6 +6,7 @@ using NetModules.Interfaces;
 using Modules.Cache.MemoryCache.Classes;
 using NetTools.Serialization;
 using Modules.Cache.Events;
+using System.Linq;
 
 namespace Modules.Cache.MemoryCache
 {
@@ -62,6 +63,15 @@ namespace Modules.Cache.MemoryCache
                 return;
             }
 
+            if (e is GetCachedEventFromInputDictionaryEvent getFromDic)
+            {
+                CacheHandler.GetCachedEventEvent(getFromDic);
+                return;
+            }
+
+            // Because this module returns true for CanHandle indefinitely, all IEvent
+            // instances will be set to this method. Here we attempt to get the event
+            // from cache and return it if cached, this is how caching works!!!
             CacheHandler.GetCachedEvent(e);
         }
 
@@ -71,21 +81,43 @@ namespace Modules.Cache.MemoryCache
         /// </summary>
         public override void OnLoading()
         {
+            /*
+             * The default expiry time in seconds for the event name if it does not exist in
+             * the expire dictionary below or the object does not include a "cacheExpire"
+             * value in the IEvent.Meta dictionary. This defaults to 1 hour (3600 seconds).
+             */
             var defaultExpire = GetSetting("defaultExpire", 3600);
-            var expire = GetSetting("expire", new Dictionary<string, object>() { { "NetModules.Events.LoggingEvent", 0 } });
+
+            var expireDic = new Dictionary<string, object>() { { "NetModules.Events.LoggingEvent", 0 } };
+            var expire = GetSetting("expire", expireDic);
 
             if (expire == null)
             {
-                expire = new Dictionary<string, object>();
+                expire = expireDic;
             }
 
             // Force LoggingEvent to have 0 cache expire to prevent stackoverflow exception...
-            if (!expire.TryGetValue("NetModules.Events.LoggingEvent", out var loggingEvent) || !(loggingEvent is int val) || val != 0)
+            foreach (var kv in expireDic)
             {
-                expire["NetModules.Events.LoggingEvent"] = 0;
+                expire[kv.Key] = kv.Value;
             }
 
-            CacheHandler = new CacheHandler(this, (uint)defaultExpire, expire);
+            var cacheWithMeta = GetSetting("cacheWithMeta", true);
+            var excludeMetaKeysList = new List<object>() { "id", "handlers" };
+            var excludeMetaKeys = GetSetting("excludeMetaKeys", excludeMetaKeysList);
+
+            if (excludeMetaKeys == null)
+            {
+                excludeMetaKeys = excludeMetaKeysList;
+            }
+
+            excludeMetaKeys.AddRange(excludeMetaKeysList);
+            excludeMetaKeys = excludeMetaKeys.Distinct().ToList();
+
+            var cacheUniqueKeys = GetSetting("cacheUniqueKeys", true);
+
+            CacheHandler = new CacheHandler(this, (uint)Math.Clamp(defaultExpire, 0, short.MaxValue)
+                , expire, cacheWithMeta, excludeMetaKeys, cacheUniqueKeys);
             base.OnLoading();
         }
 
@@ -111,6 +143,16 @@ namespace Modules.Cache.MemoryCache
         /// <summary>
         /// 
         /// </summary>
+        public override void OnAllModulesLoaded()
+        {
+            CacheHandler.Loaded = true;
+            base.OnAllModulesLoaded();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void OnHandled(IEvent e)
         {
             if (CacheHandler == null)
@@ -118,7 +160,8 @@ namespace Modules.Cache.MemoryCache
                 return;
             }
 
-            if (e is GetCachedEvent)
+            if (e is GetCachedEvent
+                || e is GetCachedEventFromInputDictionaryEvent)
             {
                 return;
             }

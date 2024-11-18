@@ -2,6 +2,7 @@
 using NetModules;
 using NetModules.Interfaces;
 using NetTools.Serialization.JsonSchemaAttributes;
+using NetTools.Serialization.JsonSchemaEnums;
 
 namespace Modules.Cache.Events
 {
@@ -19,6 +20,7 @@ namespace Modules.Cache.Events
         /// </summary>
         [JsonSchemaTitle("")]
         [JsonSchemaDescription("")]
+        [JsonSchemaType(BasicType.Object)]
         public IEventOutput EventOutput { get; set; }
     }
 }

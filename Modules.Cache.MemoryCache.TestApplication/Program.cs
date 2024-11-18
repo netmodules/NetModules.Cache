@@ -5,6 +5,7 @@ using NetModules;
 using NetModules.Interfaces;
 using Modules.Cache.Events;
 using NetModules.Events;
+using NetTools.Serialization;
 
 namespace Modules.Cache.MemoryCache.TestApplication
 {
@@ -49,6 +50,11 @@ namespace Modules.Cache.MemoryCache.TestApplication
 
                 var thenAgain = DateTime.UtcNow;
 
+                Console.WriteLine("Testing dummy cached event...");
+                Console.WriteLine($"Name: {dummy.Name}");
+                Console.WriteLine($"Input: {dummy.Input.ToJson()}");
+                Console.WriteLine($"Metadata: {dummy.Meta.ToJson()}");
+                Console.WriteLine();
                 Console.WriteLine((getCached.Output.EventOutput as DummyCachedEventOutput).CachedTime);
                 Console.WriteLine("Set in: " + then.Subtract(now));
                 Console.WriteLine("Retrieved in: " + thenAgain.Subtract(then));

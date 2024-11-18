@@ -1,5 +1,32 @@
 ﻿{
   /*
+   * If true, "unique" keys generated using an event name, event input, and event
+   * metadata (if required) will be cached to the event ID for 2 seconds. This may
+   * improve runtime performance at the expense of additional memory usage, as
+   * event input serialization may be process heavy for large event input objects.
+  */
+  "cacheUniqueKeys": true,
+
+  /*
+   * If true, metadata is used to generate a "unique" key along with the event
+   * name and serialized event input when caching an event output. This enables
+   * events that depend on unique metadata values to be cached based on the meta
+   * values alongside the event input.
+   */
+  "cacheWithMeta": true,
+
+  /*
+   * You can set any metadata key property names here if "cacheWithMeta" is set
+   * to true. These keys will be excluded when checking for cached event output
+   * data and excluded when generating a "unique" key for caching along with the
+   * event name and serialized event input.
+  */
+  "excludeMetaKeys": [
+    "id",
+    "handlers"
+  ],
+
+  /*
    * The default expiry time in seconds for the event name if it does not exist in
    * the expire dictionary below or the object does not include a "cacheExpire"
    * value in the IEvent.Meta dictionary. This defaults to 1 hour (3600 seconds).
