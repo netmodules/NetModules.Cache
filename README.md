@@ -4,7 +4,7 @@
 
 This repository consists of two libraries:
 
-- **NetModules.Cache.MemoryCache**: A library that contains the memory caching module.
+- **NetModules.Cache.MemoryCache**: A library that contains a basic in-memory caching module.
 - **NetModules.Cache.Events**: A library that contains helper events for testing cached events, and requesting cached data on demand.
 
 It enables a simple in-memory caching solution for **NetModules** Events and can be configured to cache any event type that implements the `IEvent` interface, with the exception of an event that has assigned a strict handler using the `EventHandlerAttribute`.
@@ -44,6 +44,10 @@ Install-Package NetModules.Cache.Events
 
 When you install `MemoryCacheModule`, it will automatically register itself with the `ModuleHost` and start caching events using the default configuration (see included file: `NetModules.Cache.MemoryCache.MemoryCacheModule.settings.default.json`). You can configure the caching behavior by creating your own settings file `"NetModules.Cache.MemoryCache.MemoryCacheModule.settings.json"` and modifying/adding settings accordingly.
 
+> [!IMPORTANT]  
+> To add your own configuration to **NetModules.Cache.MemoryCache** `MemoryCacheModule`, a module that can handle a [GetSettingEvent](https://github.com/netmodules/NetModules/blob/main/NetModules/Events/GetSettingEvent.cs) is required in your `ModuleHost` project.
+> See: [NetModules.Settings.LocalSettings](https://github.com/netmodules/NetModules.Settings.LocalSettings/) for more information.
+
 Here is an example configuration file that will cache all events for 1 hour, but only cache `MyCustomModuleEvents.MyExampleEventName` event for 1 second...
 
 ```json
@@ -59,10 +63,8 @@ Here is an example configuration file that will cache all events for 1 hour, but
 }
 ```
 
-> [!IMPORTANT]  
-> To add your own configuration to **NetModules.Cache.MemoryCache** `MemoryCacheModule`, a module that can handle a [GetSettingEvent](https://github.com/netmodules/NetModules/blob/main/NetModules/Events/GetSettingEvent.cs) is required in your `ModuleHost` project.
-> See: [NetModules.Settings.LocalSettings](https://github.com/netmodules/NetModules.Settings.LocalSettings/) for more information.
-
+>[!TIP]
+>For more advanced event caching, consider creating/using a module that implements a dedicated caching service, a dedicated framework such as [Memcached](https://www.memcached.org/), or reading/writing cache to dedicated [Redis Enterprise cache](https://redis.io/solutions/caching/) designed for caching at scale. This module can be used as a reference.
 
 ## Contributing
 
