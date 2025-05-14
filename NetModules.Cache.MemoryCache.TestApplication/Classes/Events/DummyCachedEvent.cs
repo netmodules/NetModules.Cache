@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NetModules;
 using NetModules.Interfaces;
 
-namespace Modules.Cache.MemoryCache.TestApplication
+namespace NetModules.Cache.MemoryCache.TestApplication
 {
     /// <summary>
     /// 
@@ -41,7 +41,7 @@ namespace Modules.Cache.MemoryCache.TestApplication
 
 
         /// <summary>
-        /// It has been required by modules which are designed to handle generic types of IEvent and need access to IModuleEvent.Input where available.
+        /// It has been required by modules that are designed to handle generic types of IEvent and need access to IModuleEvent.Input where available.
         /// Since directly casting to <see cref="IEvent{I, O}"/> in not allowed we must expose and handle this implementation through <see cref="IEvent"/>
         /// directly. This can be done with <see cref="System.Reflection"/> or more efficiently using dynamic casting.
         /// Eg. return ((dynamic)this).Input as IEventInput;
@@ -53,7 +53,7 @@ namespace Modules.Cache.MemoryCache.TestApplication
 
 
         /// <summary>
-        /// It has been required by modules which are designed to handle generic types of IEvent and need access to IModuleEvent.Output where available.
+        /// It has been required by modules that are designed to handle generic types of IEvent and need access to IModuleEvent.Output where available.
         /// Since directly casting to <see cref="IEvent{I, O}"/> in not allowed we must expose and handle this implementation through <see cref="IEvent"/>
         /// directly. This can be done with <see cref="System.Reflection"/> or more efficiently using dynamic casting.
         /// Eg. return ((dynamic)this).Output as IEventOutput;
@@ -65,7 +65,7 @@ namespace Modules.Cache.MemoryCache.TestApplication
 
 
         /// <summary>
-        /// It has been required by modules which are designed to handle generic types of IEvent and need access to the setter for IModuleEvent.Output.
+        /// It has been required by modules that are designed to handle generic types of IEvent and need access to the setter for IModuleEvent.Output.
         /// Since directly casting to <see cref="IEvent{I, O}"/> in not allowed we must expose and handle this implementation through <see cref="IEvent"/>
         /// directly. This can be done with <see cref="System.Reflection"/>.
         /// </summary>

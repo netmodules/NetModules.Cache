@@ -8,16 +8,15 @@ using NetTools.Serialization;
 using NetModules;
 using NetModules.Interfaces;
 using NetModules.Events;
-using Modules.Cache.Events;
+using NetModules.Cache.Events;
 
-namespace Modules.Cache.MemoryCache.Classes
+namespace NetModules.Cache.MemoryCache.Classes
 {
     [Serializable]
     internal class CacheHandler
     {
         Module Module;
-        //MD5 Crypto;
-
+        
         TimeSpan DefaultExpires;
         Dictionary<string, int> Expires;
         
@@ -30,38 +29,46 @@ namespace Modules.Cache.MemoryCache.Classes
         // when OnAllModulesLoaded() is invoked by ModuleHost.
         internal bool Loaded = false;
 
+
         /// <summary>
-        /// 
+        /// Creates a new instance of the CacheHandler class. This is used to handle any incoming events
+        /// and return cached data if available.
         /// </summary>
         internal CacheHandler(Module module, uint defaultExpires, Dictionary<string, object> expires, bool cacheWithMeta, List<object> excludeMetaKeys, bool cacheUniqueKeys)
         {
             Module = module;
-            //Crypto = MD5.Create();
-
-            DefaultExpires = TimeSpan.FromSeconds(defaultExpires);
-            Expires = new Dictionary<string, int>(expires.Select(x => new KeyValuePair<string, int>(x.Key, int.TryParse(x.Value.ToString(), out var expire) ? expire : (int)DefaultExpires.TotalSeconds)));
             CacheWithMeta = cacheWithMeta;
-            ExcludeMetaKeys = new List<string>(excludeMetaKeys.Where(x => x != null && !string.IsNullOrWhiteSpace(x.ToString())).Select(x => x.ToString()));
             CacheUniqueKeys = cacheUniqueKeys;
+            DefaultExpires = TimeSpan.FromSeconds(defaultExpires);
+            ExcludeMetaKeys = new List<string>(excludeMetaKeys.Where(x => x != null && !string.IsNullOrWhiteSpace(x.ToString())).Select(x => x.ToString()));
+            Expires = new Dictionary<string, int>(expires.Select(x => new KeyValuePair<string, int>(x.Key, int.TryParse(x.Value.ToString(), out var expire)
+                ? expire
+                : (int)DefaultExpires.TotalSeconds)));
+
         }
 
 
         /// <summary>
         /// 
         /// </summary>
-        internal void GetCachedEvent(IEvent @event)
+        internal void GetCachedEvent(IEvent e)
         {
             if (!Loaded)
             {
                 return;
             }
 
-            if (@event.GetMetaValue("fromCache", false) || @event.GetMetaValue("noCache", false))
+            // Check to see if the event has already been returned from cache, and if it has we shouldn't handle it again.
+            // We also check here to see if the event is marked as "noCache" (do not cache), and if it is we shouldn't
+            // handle it.
+            if (e.GetMetaValue(Constants.FromCache, false) || e.GetMetaValue(Constants.NoCache, false))
             {
                 return;
             }
 
-            if (Expires.TryGetValue(@event.Name, out int seconds))
+            // If the event is included in the expires dictionary and the value is 0 then we don't want to return a cached
+            // output for the event.
+            if (Expires.TryGetValue(e.Name, out int seconds))
             {
                 if (seconds == 0)
                 {
@@ -69,15 +76,15 @@ namespace Modules.Cache.MemoryCache.Classes
                 }
             }
 
-            var input = @event.GetEventInput();
+            var input = e.GetEventInput();
 
             if (input == null)
             {
                 return;
             }
 
-            var meta = @event.Meta;
-            var cached = GetCached(@event.Name, input, meta);
+            var meta = e.Meta;
+            var cached = GetCached(e.Name, input, meta);
 
             if (cached == null)
             {
@@ -91,9 +98,9 @@ namespace Modules.Cache.MemoryCache.Classes
             // happen and throw an exception.
             try
             {
-                @event.SetEventOutput(cached);
-                @event.SetMetaValue("fromCache", true, true);
-                @event.Handled = true;
+                e.SetEventOutput(cached);
+                e.SetMetaValue(Constants.FromCache, true, true);
+                e.Handled = true;
             }
             catch { }
         }
@@ -106,16 +113,16 @@ namespace Modules.Cache.MemoryCache.Classes
         {
             if (string.IsNullOrEmpty(e.Input.EventName) || e.Input.EventInput == null)
             {
-                e.SetMetaValue("message", "GetCachedEvent.Input.EventName and GetCachedEvent.Input.EventInput must be set to valid objects.");
+                e.SetMetaValue(Constants.Message, Constants.MessageMustBeValid);
                 e.Handled = false;
                 return;
             }
 
             var cached = GetCached(e.Input.EventName, e.Input.EventInput, e.Input.EventMeta);
 
-            if(cached == null)
+            if (cached == null)
             {
-                e.SetMetaValue("message", "This event has not been cached.");
+                e.SetMetaValue(Constants.Message, Constants.MessageNotCached);
                 e.Handled = false;
                 return;
             }
@@ -136,7 +143,7 @@ namespace Modules.Cache.MemoryCache.Classes
         {
             if (string.IsNullOrEmpty(e.Input.EventName) || e.Input.EventInput == null)
             {
-                e.SetMetaValue("message", "GetCachedEvent.Input.EventName and GetCachedEvent.Input.EventInput must be set to valid objects.");
+                e.SetMetaValue(Constants.Message, Constants.MessageMustBeValid);
                 e.Handled = false;
                 return;
             }
@@ -145,7 +152,7 @@ namespace Modules.Cache.MemoryCache.Classes
 
             if (@event == null)
             {
-                e.SetMetaValue("message", "Unknown event, the event could not be found in Module.Host.Events");
+                e.SetMetaValue(Constants.Message, Constants.MessageEventNotFound);
                 e.Handled = false;
                 return;
             }
@@ -161,7 +168,7 @@ namespace Modules.Cache.MemoryCache.Classes
 
             if (cached == null)
             {
-                e.SetMetaValue("message", "This event has not been cached.");
+                e.SetMetaValue(Constants.Message, Constants.MessageNotCached);
                 e.Handled = false;
                 return;
             }
@@ -203,10 +210,12 @@ namespace Modules.Cache.MemoryCache.Classes
         /// <summary>
         /// 
         /// </summary>
-        internal void SetCachedEvent(IEvent @event)
+        internal void SetCachedEvent(IEvent e)
         {
             // Check to see if the event has already been cached and if it has we shouldn't cache it again.
-            if (@event.GetMetaValue("fromCache", false) || @event.GetMetaValue("noCache", false))
+            // We also check here to see if the event is marked as "noCache" (do not cache), and if it is we shouldn't
+            // handle it.
+            if (e.GetMetaValue(Constants.FromCache, false) || e.GetMetaValue(Constants.NoCache, false))
             {
                 return;
             }
@@ -215,12 +224,12 @@ namespace Modules.Cache.MemoryCache.Classes
 
             // Check to see if the event has the cacheExpires meta key and if it does then this overrides
             // any other settings.
-            var metaCache = @event.GetMetaValue("cacheExpires", -1);
+            var metaCache = e.GetMetaValue(Constants.CacheExpires, -1);
 
             if (metaCache == -1)
             {
                 // "cacheExpires" meta value may be a TimeSpan...
-                var timespanCache = @event.GetMetaValue("cacheExpires", default(TimeSpan));
+                var timespanCache = e.GetMetaValue(Constants.CacheExpires, default(TimeSpan));
 
                 if (timespanCache.TotalSeconds > 0)
                 {
@@ -232,7 +241,7 @@ namespace Modules.Cache.MemoryCache.Classes
             // overrides any other settings.
             if (metaCache == -1)
             {
-                var timespanCache = @event.GetMetaValue("cache", default(TimeSpan));
+                var timespanCache = e.GetMetaValue(Constants.Cache, default(TimeSpan));
 
                 if (timespanCache.TotalSeconds > 0)
                 {
@@ -243,14 +252,14 @@ namespace Modules.Cache.MemoryCache.Classes
             // "cache" meta value may be a int (seconds)...
             if (metaCache == -1)
             {
-                metaCache = @event.GetMetaValue("cache", -1);
+                metaCache = e.GetMetaValue(Constants.Cache, -1);
             }
 
             if (metaCache > -1)
             {
                 expires = TimeSpan.FromSeconds(metaCache);
             }
-            else if (Expires.TryGetValue(@event.Name, out int seconds))
+            else if (Expires.TryGetValue(e.Name, out int seconds))
             {
                 // Is the event named in the expires dictionary? If it is then this overrides the default
                 // expiry time.
@@ -269,15 +278,15 @@ namespace Modules.Cache.MemoryCache.Classes
 
             // We use the IEvent.Name and IEvent.Input to generate a unique key to cache the event output with.
             // If the input or output are null we can't cache the output object.
-            var input = @event.GetEventInput();
-            var output = @event.GetEventOutput();
+            var input = e.GetEventInput();
+            var output = e.GetEventOutput();
 
             if (input == null || output == null)
             {
                 return;
             }
 
-            var key = GenerateInputHash(@event.Name, input, @event.Meta);
+            var key = GenerateInputHash(e.Name, input, e.Meta);
 
             if (!string.IsNullOrEmpty(key))
             {
@@ -327,7 +336,7 @@ namespace Modules.Cache.MemoryCache.Classes
             }
             catch(Exception ex)
             {
-                Module.Log(LoggingEvent.Severity.Error, "CacheModule is unable to genterate an input hash key for this event:", name, ex);
+                Module.Log(LoggingEvent.Severity.Error, $"{nameof(MemoryCacheModule)} is unable to genterate an input hash key for this event.", name, ex);
             }
 
             return sb.ToString();

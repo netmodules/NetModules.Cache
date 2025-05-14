@@ -5,21 +5,21 @@ using NetModules.Interfaces;
 using NetTools.Serialization.JsonSchemaAttributes;
 using NetTools.Serialization.JsonSchemaEnums;
 
-namespace Modules.Cache.Events
+namespace NetModules.Cache.Events
 {
     /// <summary>
-    /// The properties in this object are used to create an identifier which is used to lookup a cached output.
+    /// The properties in this object are used to create an identifier that is used to lookup a cached output.
     /// </summary>
     [JsonSchemaTitle("Get Cached Event From Input Dictionary Input")]
-    [JsonSchemaDescription("")]
+    [JsonSchemaDescription("The properties in this object are used to create an identifier that is used to lookup a cached output.")]
     public struct GetCachedEventFromInputDictionaryEventInput : IEventInput
     {
         /// <summary>
-        /// This property identifies the event type for which the <see cref="EventInput"/> belongs. Set this to
+        /// This property identifies the event type for that the <see cref="EventInput"/> belongs. Set this to
         /// the name of the event you wish to check the cache for.
         /// </summary>
         [JsonSchemaTitle("Event Name")]
-        [JsonSchemaDescription("This property identifies the event type for which the Event Input belongs. Set this to the name of the event you wish to check the cache for.")]
+        [JsonSchemaDescription("This property identifies the event type for that the Event Input belongs. Set this to the name of the event you wish to check the cache for.")]
         public EventName EventName { get; set; }
 
         /// <summary>

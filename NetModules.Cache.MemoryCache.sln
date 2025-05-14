@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules.Cache.MemoryCache", "Modules.Cache.MemoryCache\Modules.Cache.MemoryCache.csproj", "{4DBDFFAC-CFAA-4D64-B860-73E4272C96D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetModules.Cache.MemoryCache", "NetModules.Cache.MemoryCache\NetModules.Cache.MemoryCache.csproj", "{4DBDFFAC-CFAA-4D64-B860-73E4272C96D4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules.Cache.MemoryCache.TestApplication", "Modules.Cache.MemoryCache.TestApplication\Modules.Cache.MemoryCache.TestApplication.csproj", "{0C91DBBB-A456-4724-BF48-F68CBB280F03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetModules.Cache.MemoryCache.TestApplication", "NetModules.Cache.MemoryCache.TestApplication\NetModules.Cache.MemoryCache.TestApplication.csproj", "{0C91DBBB-A456-4724-BF48-F68CBB280F03}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules.Cache.Events", "Modules.Cache.Events\Modules.Cache.Events.csproj", "{21281362-A34D-4D6A-8B3D-7151CFC07DE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetModules.Cache.Events", "NetModules.Cache.Events\NetModules.Cache.Events.csproj", "{21281362-A34D-4D6A-8B3D-7151CFC07DE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

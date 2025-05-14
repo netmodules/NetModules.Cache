@@ -2,7 +2,7 @@
 using NetModules;
 using NetModules.Interfaces;
 
-namespace Modules.Cache.MemoryCache.TestApplication
+namespace NetModules.Cache.MemoryCache.TestApplication
 {
     /// <summary>
     /// 

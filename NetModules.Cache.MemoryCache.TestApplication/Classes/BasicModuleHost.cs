@@ -1,6 +1,6 @@
 ﻿using NetModules;
 
-namespace Modules.Cache.MemoryCache.TestApplication
+namespace NetModules.Cache.MemoryCache.TestApplication
 {
     class BasicModuleHost : ModuleHost
     {

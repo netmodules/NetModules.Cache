@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading;
 using NetModules;
 using NetModules.Interfaces;
-using Modules.Cache.Events;
+using NetModules.Cache.Events;
 using NetModules.Events;
 using NetTools.Serialization;
 
-namespace Modules.Cache.MemoryCache.TestApplication
+namespace NetModules.Cache.MemoryCache.TestApplication
 {
     class Program
     {
@@ -22,7 +22,6 @@ namespace Modules.Cache.MemoryCache.TestApplication
 
             if (myModule.Count > 0)
             {
-                myModule[0].GetSetting("testInt", 0);
                 myModule[0].Log(LoggingEvent.Severity.Debug, "DebugLogTest");
 
                 var now = DateTime.UtcNow;
@@ -60,11 +59,12 @@ namespace Modules.Cache.MemoryCache.TestApplication
                 Console.WriteLine("Retrieved in: " + thenAgain.Subtract(then));
             }
 
+
             var getSetting1 = new GetSettingEvent()
             {
                 Input = new GetSettingEventInput()
                 {
-                    ModuleName = "Modules.Cache.MemoryCache.MemoryCacheModule",
+                    ModuleName = myModule[0].ModuleAttributes.Name,
                     SettingName = "defaultExpire"
                 }
             };
@@ -76,7 +76,7 @@ namespace Modules.Cache.MemoryCache.TestApplication
             {
                 Input = new GetSettingEventInput()
                 {
-                    ModuleName = "Modules.Cache.MemoryCache.MemoryCacheModule",
+                    ModuleName = myModule[0].ModuleAttributes.Name,
                     SettingName = "defaultExpire"
                 }
             };

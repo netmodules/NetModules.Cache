@@ -40,8 +40,7 @@
    * will stop the event object from being cached.
    */
   "expire": {
-    "Cache.GetCachedEvent": 0,
-    "NetModules.Events.GetSettingEvent": 0,
-    "NetModules.Events.LoggingEvent": 0
+    "NetModules.Events.LoggingEvent": 0,
+    "NetModules.Events.GetSettingEvent": 0
   }
 }
