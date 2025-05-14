@@ -12,7 +12,7 @@
 	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	  <RepositoryType>Git</RepositoryType>
 	  <RepositoryUrl>https://github.com/netmodules/NetModules.Cache</RepositoryUrl>
-	  <Description>A basic cache module that uses an in-memory dictionary to store event output to a cache, using the event name and input as a storage and lookup identifier.</Description>
+	  <Description>A basic cache module that uses an in-memory mechanism to store event output to a cache, using the event name, input, and optional metadata as a storage and lookup identifier.</Description>
     <Version>1.3.8</Version>
   </PropertyGroup>
 

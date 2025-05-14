@@ -40,6 +40,8 @@ To use **NetModules.Cache.Events**, and request cache data on demand from anothe
 Install-Package NetModules.Cache.Events
 ```
 
+While not required, **NetModules.Cache.Events** contains events that can be handled by an event caching module, to return a cached event output on demand. A usage example could be a clustering module system, where a peer may request a cached output from another peer.
+
 ### Setup and Configuration
 
 When you install `MemoryCacheModule`, it will automatically register itself with the `ModuleHost` and start caching events using the default configuration (see included file: `NetModules.Cache.MemoryCache.MemoryCacheModule.settings.default.json`). You can configure the caching behavior by creating your own settings file `"NetModules.Cache.MemoryCache.MemoryCacheModule.settings.json"` and modifying/adding settings accordingly.

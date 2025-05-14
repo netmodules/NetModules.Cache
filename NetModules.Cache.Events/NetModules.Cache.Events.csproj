@@ -12,7 +12,7 @@
 	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	  <RepositoryType>Git</RepositoryType>
 	  <RepositoryUrl>https://github.com/netmodules/NetTools.Serialization.JsonSchema</RepositoryUrl>
-	  <Description>This package contains events that can be handled by event caching modules to return a cached event output. Event caching modules can handle event caching silently and automatically, but can also handle these events directly if an event is raised by another module. A usage example could be peer-to-peer module event requests, where a peer may request a cache copy from another peer.</Description>
+	  <Description>This package contains events that can be referenced and handled by an event caching module to return a cached event output. Event caching modules can handle event caching silently and automatically, but can also handle the events in this pacage directly if an event is raised by another module. A usage example could be peer-to-peer module event requests, where a peer may request a cache copy from another peer.</Description>
     <Version>1.3.8</Version>
   </PropertyGroup>
 
